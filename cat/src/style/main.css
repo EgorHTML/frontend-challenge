@@ -1,0 +1,31 @@
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration:none;
+}
+
+.nav__bar{
+    background-color: rgba(33, 150, 243, 1);
+    height: 50px;
+    color: aliceblue;
+    display: flex;
+    align-items: center;
+}
+
+.nav__bar li{
+    margin-left: 10px;
+}
+
+.cats img{
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    
+}
+
+.cats{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
