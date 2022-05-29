@@ -1,16 +1,17 @@
-import { BrowserRouter, Routes,Route } from "react-router-dom";
-import { Link } from "react-router-dom";
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import NavBar from "./NavBar";
 import "../style/main.css"
-import Cats from "./Cats";
+const Cats = lazy(()=>import("./Cats"));
 
  
 
 const App = () => {
   return ( <div>
       <NavBar/>
-      <Cats/>
+      <Suspense fallback = { <div>Loading...</div> }>
+        <Cats/>
+      </Suspense>
+      
   </div> )
 }
 
