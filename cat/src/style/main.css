@@ -15,13 +15,17 @@
 
 .nav__bar li{
     margin-left: 10px;
+    
 }
 
 .cats img{
     width: 200px;
     height: 200px;
-    margin: 10px;
-    
+    margin: 10px;   
+}
+
+.cats li{
+    position: relative;
 }
 
 .cats{
@@ -29,3 +33,16 @@
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.like::after{
+    content: url("./heart2.png");
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    cursor: pointer;
+}
+
+.cats img:hover + .like::after{
+    content: url("./heart1.png");
+}
+

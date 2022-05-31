@@ -1,37 +1,48 @@
-import React, { useEffect, useState, Suspense } from "react";
-import ImageCat from "./ImageCat";
+import React, { useEffect, useState, Suspense, lazy } from "react";
+import { getData } from "./App";
+const ImageCat = lazy(()=>import("./ImageCat"))
 
-function getData(){
-    return fetch(`https://api.thecatapi.com/v1/breeds`,
-        {
-            method:"GET",
-            headers:{"x-api-key":"8a9ac082-a8ab-4805-b148-d4aaf734e389"}
-        })
-        
-} 
+const defaultLimit = (window.innerWidth/200)*(window.innerHeight/200)
+ 
 
-const Cats = () => {
+const Cats = (props:any) => {
     const [stateCats,setCats] = useState<any>([])
+    const [scroll,setScroll] = useState(0)
+    const [limit,setLimit] = useState(defaultLimit)
+    
+    useEffect(()=>{
+        document.addEventListener("scroll",handler)
+        function handler(){
+            if(document.documentElement.scrollTop>scroll+window.innerHeight-0.5*window.innerHeight){
+                setScroll(document.documentElement.scrollTop)
+                setLimit(prev=>Math.floor(prev)+defaultLimit)
+            }
+        }
+       return ()=>document.removeEventListener("scroll",handler)
+    })
 
     useEffect(()=>{
-            getData().then(async (cats)=> {
+            getData(limit).then(async (cats)=> {
                 let data = await cats.json()
                 setCats(data)
             })
-    },[])
+    },[limit])
     
-    return ( <div>
-        <ul className="cats">
-            {stateCats.map((cat:any)=>{
-                if(cat.image){
-                    return <li key={cat.id}>
-                    <ImageCat name = {cat.name} src={cat.image.url}/>
-                </li>
-                }
-               
-            })}
-        </ul>
-    </div> )
+        return ( <Suspense fallback = { <h1>LLLoading</h1> }>
+             <div>
+            <ul className="cats">
+                {stateCats.map((cat:any)=>{
+                    if(cat.image){
+                        return <li key={cat.id}>
+                        <ImageCat name = {cat.name} src={cat.image.url}/>
+                        <div onClick={()=>console.log("click")} className="like"></div>
+                    </li>
+                   
+                    }
+                })}
+            </ul>
+        </div> 
+        </Suspense>)
 }
 
 
